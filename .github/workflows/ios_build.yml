@@ -2,13 +2,14 @@ name: Build iOS IPA
 
 on:
   push:
-    branches: [ "main", "master" ]
+    branches: [ "main" ]
   workflow_dispatch:
 
 jobs:
   build:
     name: Build and Package
-    runs-on: macos-14 # Required for iOS 17+ and SwiftData
+    # We use macos-14 because it has Xcode 15 (Required for SwiftData)
+    runs-on: macos-14
 
     steps:
       - name: Checkout Code
