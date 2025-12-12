@@ -1,6 +1,8 @@
 name: FirstTouch
 options:
   bundleIdPrefix: com.github.user
+  # FIX: Force compatibility with Xcode 15 (which is running on the server)
+  xcodeVersion: "15.0"
 targets:
   FirstTouch:
     type: application
