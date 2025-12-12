@@ -1,0 +1,45 @@
+name: Build iOS IPA
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build and Package
+    runs-on: macos-14 # Required for iOS 17+ and SwiftData
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode Project
+        run: xcodegen generate
+
+      - name: Build App (Unsigned)
+        run: |
+          xcodebuild clean build \
+            -project FirstTouch.xcodeproj \
+            -scheme FirstTouch \
+            -sdk iphoneos \
+            -configuration Release \
+            -derivedDataPath build \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Create IPA Payload
+        run: |
+          mkdir Payload
+          cp -r build/Build/Products/Release-iphoneos/FirstTouch.app Payload/
+          zip -r FirstTouch.ipa Payload
+
+      - name: Upload IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: FirstTouch-IPA
+          path: FirstTouch.ipa
