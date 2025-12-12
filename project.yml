@@ -1,13 +1,16 @@
 name: FirstTouch
 options:
   bundleIdPrefix: com.github.user
-  # FIX: Force compatibility with Xcode 15 (which is running on the server)
+  # ---------------------------------------------------------
+  # FIX IS HERE: Force the project format to be compatible with Xcode 15
+  # ---------------------------------------------------------
   xcodeVersion: "15.0"
+  deploymentTarget:
+    iOS: "17.0"
 targets:
   FirstTouch:
     type: application
     platform: iOS
-    deploymentTarget: "17.0"
     sources: [Sources]
     settings:
       base:
